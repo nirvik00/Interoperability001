@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="src/bootstrap.min.css" />
+        <link rel="stylesheet" href="src/index.css" />
+        <title>interoperability</title>
+    </head>
+    <body>
+        <h1>interoperability</h1>
+        <button type="button" class="btn btn-primary" id="readClipboardBtn">
+            Read clipboard
+        </button>
+        <button type="button" class="btn btn-primary" id="clearClipboardBtn">
+            Clear data
+        </button>
+        <canvas id="renderCanvas"></canvas>
+        <div id="infodiv"></div>
+        <div id="searchdiv">
+            search a property
+            <input type="text" />
+            <button class="btn btn-primary">Search</button>
+        </div>
+        <script type="module" src="/src/renderer.js"></script>
+    </body>
+</html>
