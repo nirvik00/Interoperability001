@@ -5,8 +5,13 @@ body{
 
 #renderCanvas{
   width:95%;
-  height: auto;
+  height:50%;
   border: 1px solid black;
+  z-index:0;
+}
+
+#controlsdiv{
+  margin-bottom:10px;
 }
 
 #infodiv{
@@ -20,5 +25,9 @@ body{
 }
 
 #searchdiv{
-  height:200px;
+  position: absolute;
+  display:none;
+  bottom: 100px;
+  z-index:10;
+  background-color: white;
 }
