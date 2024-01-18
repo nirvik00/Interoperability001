@@ -3,12 +3,10 @@ import * as BABYLON from "@babylonjs/core";
 
 var infodiv = document.getElementById("infodiv");
 
-var DataReceived = false;
-var DATA;
-var positionArr = [];
-var indexArr = [];
+var POSITION_ARR = [];
+var INDEX_ARR = [];
 var MESH_ARR = [];
-var dataArr = [];
+var DATA_ARR = [];
 var SELECTED_MESH_ARR = [];
 
 var readClipboardBtn = document.getElementById("readClipboardBtn");
@@ -92,8 +90,13 @@ async function readClipboardFunction(scene) {
     var mat1 = new BABYLON.StandardMaterial("mat1", scene);
     mat1.diffuseColor = new BABYLON.Color3(1, 1, 0);
     //
+    POSITION_ARR = [];
+    INDEX_ARR = [];
+    MESH_ARR = [];
+    DATA_ARR = [];
     MESH_ARR = [];
     SELECTED_MESH_ARR = [];
+
     //
     readClipboardBtn.addEventListener("click", async () => {
         const res = await api.readClipboard();
@@ -103,24 +106,24 @@ async function readClipboardFunction(scene) {
                 data.replace("\\", " ");
                 var objArr = JSON.parse(data);
                 objArr.forEach((obj) => {
-                    positionArr = [];
-                    indexArr = [];
+                    POSITION_ARR = [];
+                    INDEX_ARR = [];
                     let verts = obj.vertices;
                     verts.forEach((v) => {
-                        positionArr.push(v.x);
-                        positionArr.push(v.z);
-                        positionArr.push(v.y);
+                        POSITION_ARR.push(v.x);
+                        POSITION_ARR.push(v.z);
+                        POSITION_ARR.push(v.y);
                     });
                     let faces = obj.faces;
                     faces.forEach((f) => {
-                        indexArr.push(f.a);
-                        indexArr.push(f.b);
-                        indexArr.push(f.c);
+                        INDEX_ARR.push(f.a);
+                        INDEX_ARR.push(f.b);
+                        INDEX_ARR.push(f.c);
                     });
                     let name = "mesh" + count;
                     var customMesh = new BABYLON.Mesh(name, scene);
-                    var positions = positionArr;
-                    var indices = indexArr;
+                    var positions = POSITION_ARR;
+                    var indices = INDEX_ARR;
                     var normals = [];
                     BABYLON.VertexData.ComputeNormals(
                         positions,
@@ -134,7 +137,7 @@ async function readClipboardFunction(scene) {
                     vertexData.applyToMesh(customMesh, true);
                     customMesh.material = mat1;
                     MESH_ARR.push(customMesh);
-                    dataArr.push(obj.property_set);
+                    DATA_ARR.push(obj.property_set);
                     count++;
                 });
             })
@@ -168,7 +171,7 @@ async function selectObjects(scene) {
             let name = "mesh" + i;
             if (hit.pickedMesh && hit.pickedMesh.name == name) {
                 reqName = name;
-                dataArr[i].forEach((e) => {
+                DATA_ARR[i].forEach((e) => {
                     var s = e.param + " : " + e.value;
                     var p = document.createElement("p");
                     p.innerHTML = s;
@@ -188,7 +191,7 @@ async function selectObjects(scene) {
                 e.material = mat1;
             }
         });
-        SELECTED_MESH_ARR = [...tempSelectedArr];
+        SELECTED_MESH_ARR = tempSelectedArr;
         await showSearchProperties();
     };
 }
